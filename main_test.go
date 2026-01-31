@@ -94,3 +94,81 @@ func TestPower(t *testing.T) {
         })
     }
 }
+
+func TestMakeCounter(t *testing.T) {
+    counter1 := MakeCounter(0)
+    
+
+    if got := counter1(); got != 1 {
+        t.Errorf("counter1() first call = %v, want 1", got)
+    }
+    if got := counter1(); got != 2 {
+        t.Errorf("counter1() second call = %v, want 2", got)
+    }
+    
+    
+    counter2 := MakeCounter(10)
+    if got := counter2(); got != 11 {
+        t.Errorf("counter2() first call = %v, want 11", got)
+    }
+    
+    if got := counter1(); got != 3 {
+        t.Errorf("counter1() third call = %v, want 3", got)
+    }
+    if got := counter2(); got != 12 {
+        t.Errorf("counter2() second call = %v, want 12", got)
+    }
+}
+
+func TestMakeMultiplier(t *testing.T) {
+    doubler := MakeMultiplier(2)
+    tripler := MakeMultiplier(3)
+    
+    tests := []struct {
+        name   string
+        fn     func(int) int
+        input  int
+        want   int
+    }{
+        {"doubler with 5", doubler, 5, 10},
+        {"doubler with 0", doubler, 0, 0},
+        {"doubler with -3", doubler, -3, -6},
+        {"tripler with 4", tripler, 4, 12},
+        {"tripler with -2", tripler, -2, -6},
+    }
+    
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            got := tt.fn(tt.input)
+            if got != tt.want {
+                t.Errorf("%s(%d) = %v, want %v", tt.name, tt.input, got, tt.want)
+            }
+        })
+    }
+}
+
+func TestMakeAccumulator(t *testing.T) {
+    add, subtract, get := MakeAccumulator(100)
+
+    if got := get(); got != 100 {
+        t.Errorf("initial get() = %v, want 100", got)
+    }
+    
+    add(50)
+    if got := get(); got != 150 {
+        t.Errorf("after add(50), get() = %v, want 150", got)
+    }
+    
+    
+    subtract(30)
+    if got := get(); got != 120 {
+        t.Errorf("after subtract(30), get() = %v, want 120", got)
+    }
+    
+    add(100)
+    subtract(20)
+    add(5)
+    if got := get(); got != 205 {
+        t.Errorf("after multiple operations, get() = %v, want 205", got)
+    }
+}
