@@ -126,3 +126,56 @@ func ExploreProcess() {
     fmt.Println("- The element address points to the actual data in memory")
     fmt.Println("- Other processes cannot access these addresses due to memory protection")
 }
+
+
+func DoubleValue(x int) {
+    x = x * 2
+}
+
+func DoublePointer(x *int) {
+    *x = *x * 2
+}
+
+func CreateOnStack() int {
+    x := 42
+    return x
+}
+
+func CreateOnHeap() *int {
+    x := 42
+    return &x
+}
+
+func SwapValues(a, b int) (int, int) {
+    return b, a
+}
+
+func SwapPointers(a, b *int) {
+    *a, *b = *b, *a
+}
+
+func AnalyzeEscape() {
+    fmt.Println("\n=== Escape Analysis ===")
+    
+    stackVal := CreateOnStack()
+    fmt.Printf("Stack value: %d (address cannot be taken)\n", stackVal)
+    
+    heapPtr := CreateOnHeap()
+    fmt.Printf("Heap value via pointer: %d (address: %p)\n", *heapPtr, heapPtr)
+    
+    fmt.Println("\nEscape Analysis Explanation:")
+    fmt.Println("1. Variables in CreateOnStack() stay on the stack because:")
+    fmt.Println("   - We return only the value, not its address")
+    fmt.Println("   - The compiler can determine its lifetime is limited to the function")
+    fmt.Println("")
+    fmt.Println("2. Variables in CreateOnHeap() escape to the heap because:")
+    fmt.Println("   - We return a pointer to the variable")
+    fmt.Println("   - The variable's lifetime extends beyond the function")
+    fmt.Println("   - Go's garbage collector will manage this memory")
+    fmt.Println("")
+    fmt.Println("3. What 'escapes to heap' means:")
+    fmt.Println("   - Variable is allocated in heap memory instead of stack")
+    fmt.Println("   - Allows variable to outlive the function call")
+    fmt.Println("   - Managed by garbage collector (automatic memory management)")
+    fmt.Println("   - Slightly slower access than stack variables")
+}
