@@ -1,6 +1,10 @@
 package main
 
-import "errors"
+import (
+    "errors"
+    "fmt"
+    "os"
+)
 
 func Factorial(n int) (int, error) {
     if n < 0 {
@@ -38,7 +42,6 @@ func Power(base, exponent int) (int, error) {
     }
     return result, nil
 }
-
 
 func MakeCounter(start int) func() int {
     count := start
@@ -126,7 +129,6 @@ func ExploreProcess() {
     fmt.Println("- The element address points to the actual data in memory")
     fmt.Println("- Other processes cannot access these addresses due to memory protection")
 }
-
 
 func DoubleValue(x int) {
     x = x * 2
