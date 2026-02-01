@@ -179,3 +179,134 @@ func AnalyzeEscape() {
     fmt.Println("   - Managed by garbage collector (automatic memory management)")
     fmt.Println("   - Slightly slower access than stack variables")
 }
+
+func main() {
+    fmt.Println("=== Go Advanced Lab Demo ===\n")
+    
+    ExploreProcess()
+    
+    fmt.Println("\n" + "="*50 + "\n")
+    
+    fmt.Println("=== Math Operations Demo ===")
+    
+    facts := []int{0, 5, 10}
+    for _, n := range facts {
+        result, err := Factorial(n)
+        if err != nil {
+            fmt.Printf("Factorial(%d) error: %v\n", n, err)
+        } else {
+            fmt.Printf("Factorial(%d) = %d\n", n, result)
+        }
+    }
+    
+    primes := []int{17, 20, 25}
+    for _, n := range primes {
+        result, err := IsPrime(n)
+        if err != nil {
+            fmt.Printf("IsPrime(%d) error: %v\n", n, err)
+        } else {
+            fmt.Printf("IsPrime(%d) = %v\n", n, result)
+        }
+    }
+    
+    powerCases := [][2]int{{2, 8}, {5, 3}, {3, 4}}
+    for _, tc := range powerCases {
+        result, err := Power(tc[0], tc[1])
+        if err != nil {
+            fmt.Printf("Power(%d, %d) error: %v\n", tc[0], tc[1], err)
+        } else {
+            fmt.Printf("Power(%d, %d) = %d\n", tc[0], tc[1], result)
+        }
+    }
+    
+    fmt.Println("\n" + "="*50 + "\n")
+    
+    fmt.Println("=== Closure Demo ===")
+    
+    fmt.Println("Independent Counters:")
+    counter1 := MakeCounter(0)
+    counter2 := MakeCounter(100)
+    
+    fmt.Printf("Counter1: %d\n", counter1())
+    fmt.Printf("Counter1: %d\n", counter1())
+    fmt.Printf("Counter2: %d\n", counter2())
+    fmt.Printf("Counter1: %d (still independent)\n", counter1())
+    fmt.Printf("Counter2: %d\n", counter2())
+    
+    fmt.Println("\nMultipliers:")
+    doubler := MakeMultiplier(2)
+    tripler := MakeMultiplier(3)
+    number := 7
+    
+    fmt.Printf("Doubler(%d) = %d\n", number, doubler(number))
+    fmt.Printf("Tripler(%d) = %d\n", number, tripler(number))
+    
+    fmt.Println("\nAccumulator:")
+    add, subtract, get := MakeAccumulator(50)
+    add(30)
+    fmt.Printf("After add(30): %d\n", get())
+    subtract(15)
+    fmt.Printf("After subtract(15): %d\n", get())
+    add(100)
+    fmt.Printf("After add(100): %d\n", get())
+    
+    fmt.Println("\n" + "="*50 + "\n")
+    
+    fmt.Println("=== Higher-Order Functions Demo ===")
+    
+    nums := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+    fmt.Printf("Original: %v\n", nums)
+    
+    squared := Apply(nums, func(x int) int { return x * x })
+    fmt.Printf("Squared: %v\n", squared)
+    
+    evens := Filter(nums, func(x int) bool { return x%2 == 0 })
+    fmt.Printf("Even numbers: %v\n", evens)
+    
+    sum := Reduce(nums, 0, func(acc, curr int) int { return acc + curr })
+    fmt.Printf("Sum of all numbers: %d\n", sum)
+    
+    double := func(x int) int { return x * 2 }
+    addTen := func(x int) int { return x + 10 }
+    doubleThenAddTen := Compose(addTen, double)
+    
+    testNumbers := []int{3, 5, 7}
+    fmt.Print("\nDouble then add ten: ")
+    for _, n := range testNumbers {
+        fmt.Printf("%d → %d  ", n, doubleThenAddTen(n))
+    }
+    fmt.Println()
+    
+    fmt.Println("\n" + "="*50 + "\n")
+    
+    fmt.Println("=== Pointer Demo ===")
+    
+    a, b := 5, 10
+    fmt.Printf("Before SwapValues: a=%d, b=%d\n", a, b)
+    newA, newB := SwapValues(a, b)
+    fmt.Printf("After SwapValues (returned): newA=%d, newB=%d\n", newA, newB)
+    fmt.Printf("Original values unchanged: a=%d, b=%d\n", a, b)
+    
+    fmt.Println("\nDemonstrating pointer swap:")
+    x, y := 20, 30
+    fmt.Printf("Before SwapPointers: x=%d, y=%d\n", x, y)
+    SwapPointers(&x, &y)
+    fmt.Printf("After SwapPointers: x=%d, y=%d (originals modified)\n", x, y)
+    
+    fmt.Println("\nDemonstrating DoublePointer:")
+    val := 21
+    fmt.Printf("Before DoublePointer: val=%d\n", val)
+    DoublePointer(&val)
+    fmt.Printf("After DoublePointer: val=%d\n", val)
+    
+    fmt.Println("\nDemonstrating DoubleValue:")
+    val2 := 21
+    fmt.Printf("Before DoubleValue: val2=%d\n", val2)
+    DoubleValue(val2)
+    fmt.Printf("After DoubleValue: val2=%d (unchanged - passed by value)\n", val2)
+    
+    AnalyzeEscape()
+    
+    fmt.Println("\n" + "="*50)
+    fmt.Println("=== Demo Complete ===")
+}
