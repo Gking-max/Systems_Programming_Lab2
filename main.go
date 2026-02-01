@@ -103,3 +103,26 @@ func Compose(f func(int) int, g func(int) int) func(int) int {
         return f(g(x))
     }
 }
+
+func ExploreProcess() {
+    fmt.Println("=== Process Information ===")
+    
+    pid := os.Getpid()
+    fmt.Printf("Current Process ID: %d\n", pid)
+    
+    ppid := os.Getppid()
+    fmt.Printf("Parent Process ID: %d\n", ppid)
+    
+    data := []int{1, 2, 3, 4, 5}
+    
+    fmt.Printf("Memory address of slice: %p\n", &data)
+    fmt.Printf("Memory address of first element: %p\n", &data[0])
+    
+    fmt.Println("\nExplanation:")
+    fmt.Println("- Process ID (PID) is a unique identifier assigned to each running process")
+    fmt.Println("- Parent Process ID (PPID) identifies the process that created this process")
+    fmt.Println("- Process isolation ensures each process has its own memory space")
+    fmt.Println("- The slice header address is where Go stores slice metadata (length, capacity)")
+    fmt.Println("- The element address points to the actual data in memory")
+    fmt.Println("- Other processes cannot access these addresses due to memory protection")
+}
